@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Box, Button, TextField, Paper } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Cookies from 'js-cookie';
-import { useLoginMutation,useGetUserQuery } from '../services/authApi';
+import { useLoginMutation } from '../services/authApi';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../features/auth/authSlice';
 import { useNavigate } from 'react-router-dom';

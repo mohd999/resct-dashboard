@@ -9,8 +9,9 @@ app.use(express.json());
 
 let mockUser = {
   id: 1,
-  email: 'mohd.ali@incedoinc.com',
-  name: 'Mohd Ali',
+  email: 'mohd.ali@gmail.com',
+  firstName: "Mohd",
+  lastName:"Ali",
   refreshToken: 'mock-refresh-token',
 };
 
@@ -18,7 +19,7 @@ let accessToken = 'mock-access-token';
 
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
-  if (email === 'mohd.ali@incedoinc.com' && password === '123456') {
+  if (email === 'mohd.ali@gmail.com' && password === '123') {
     return res.json({
       accessToken,
       refreshToken: mockUser.refreshToken,
@@ -28,7 +29,13 @@ app.post('/api/auth/login', (req, res) => {
   res.status(401).json({ message: 'Invalid credentials' });
 });
 
-app.get('/api/auth/user', (req, res) => {
+app.get('/api/user', (req, res) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  console.log('Token from header:', token);
+  if (!token) {
+    return res.status(401).json({ message: 'Token missing' });
+  }
   return res.json({
     ...mockUser,
   });
@@ -36,7 +43,6 @@ app.get('/api/auth/user', (req, res) => {
 
 app.post('/api/auth/refresh', (req, res) => {
   const { refreshToken } = req.body;
-  console.log(req.body)
   if (!refreshToken) return res.sendStatus(401);
     res.json({ accessToken: accessToken,refreshToken:refreshToken });
 });
